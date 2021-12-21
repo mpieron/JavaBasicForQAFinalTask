@@ -1,3 +1,5 @@
+package Models;
+
 public class Student {
 
     private final String name;
@@ -12,10 +14,13 @@ public class Student {
         id ++;
     }
 
-
     public String getName() { return name; }
 
     public String getSurname() { return surname; }
+
+    public String getFullName(){
+        return  name + " " + surname;
+    }
 
     public int getStudentId() {
         return studentId;
