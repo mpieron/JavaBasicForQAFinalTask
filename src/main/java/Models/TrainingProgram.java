@@ -2,12 +2,10 @@ package Models;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
 
 public class TrainingProgram{
 
-    private static final int workingDays = 5;
     private static final int workingHours = 8;
     private static final int startHour = 10;
     private static final int endHour = 18;
@@ -25,16 +23,41 @@ public class TrainingProgram{
         this.durationTime = calculateDurationTime();
     }
 
-    public int calculateTime(LocalDateTime now) {
-        return 0;
+    public String calculateTimeToCompletionOrAfterCompletion(LocalDateTime now) {
+        int hours;
+        int days;
+
+        if(isFinished(now)){
+            hours = calculateFinishedOrToFinishHours(determineEndDate(), now);
+            days = calculateFinishedOrToFinishDays(determineEndDate(), now);
+        }
+        else {
+            hours = calculateFinishedOrToFinishHours(now, determineEndDate());
+            days = calculateFinishedOrToFinishDays(now, determineEndDate());
+        }
+        return String.format("%d d %d hours", days, hours);
     }
 
+    private int calculateFinishedOrToFinishDays(LocalDateTime before, LocalDateTime after){
+        int days = 0;
+        while(before.plusDays(1).getDayOfMonth() < after.getDayOfMonth()){
+            if(before.plusDays(1).getDayOfWeek() != DayOfWeek.SATURDAY && before.plusDays(1).getDayOfWeek() != DayOfWeek.SUNDAY){
+                days++;
+            }
+            before = before.plusDays(1);
+        }
+        return days;
+    }
+
+    private int calculateFinishedOrToFinishHours(LocalDateTime before, LocalDateTime after){
+        return after.getHour() < before.getHour() ? endHour - before.getHour() + after.getHour() - startHour : after.getHour() - before.getHour();
+    }
 
     public boolean isFinished(LocalDateTime now){
-        return now.isAfter(calculateEndDate());
+        return now.isAfter(determineEndDate());
     }
 
-    public LocalDateTime calculateEndDate(){
+    public LocalDateTime determineEndDate(){
         LocalDateTime date = determineEndDay();
         int hour = determineEndHour();
 
@@ -43,26 +66,24 @@ public class TrainingProgram{
     }
 
     private LocalDateTime determineEndDay(){
-        int days = durationTime/workingHours;
         LocalDateTime endDate = startDate;
+        int days = durationTime/workingHours;
 
         if(durationTime%workingHours + startDate.getHour() > endHour)
-            days += 1;
+            days++;
 
         while (days > 0) {
             if(endDate.plusDays(1).getDayOfWeek() != DayOfWeek.SUNDAY && endDate.plusDays(1).getDayOfWeek() != DayOfWeek.SATURDAY) {
-                    endDate = endDate.plusDays(1);
-                    days -= 1;
+                    days--;
             }
-            else
-                endDate = endDate.plusDays(1);
+            endDate = endDate.plusDays(1);
         }
-
         return endDate;
     }
 
     private int determineEndHour(){
         int hour = durationTime%workingHours + startDate.getHour();
+
         if(hour  > endHour)
             hour = startHour + hour%workingHours;
 
@@ -70,12 +91,8 @@ public class TrainingProgram{
     }
 
     private int calculateDurationTime(){
-        int durationTime = 0;
-
-        for(Course course : courseList)
-            durationTime += course.getDurationHours();
-
-        return durationTime;
+        return courseList.stream()
+                .reduce(0, (partialTime, course) -> partialTime + course.getDurationHours(), Integer::sum);
     }
 
     public String getTrainingName(){
@@ -85,6 +102,6 @@ public class TrainingProgram{
     @Override
     public String toString(){
         return String.format("Working time: %d - %d\n Program name: %s\n Program duration: %d \n Start date: %s \n End date: %s",
-                startHour, endHour, trainingName ,durationTime, startDate, calculateEndDate());
+                startHour, endHour, trainingName ,durationTime, startDate, determineEndDate());
     }
 }
