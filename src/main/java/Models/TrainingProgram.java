@@ -40,7 +40,7 @@ public class TrainingProgram{
 
     private int calculateFinishedOrToFinishDays(LocalDateTime before, LocalDateTime after){
         int days = 0;
-        while(before.plusDays(1).getDayOfMonth() < after.getDayOfMonth()){
+        while(before.plusDays(1).isBefore(after)){
             if(before.plusDays(1).getDayOfWeek() != DayOfWeek.SATURDAY && before.plusDays(1).getDayOfWeek() != DayOfWeek.SUNDAY){
                 days++;
             }
@@ -101,7 +101,7 @@ public class TrainingProgram{
 
     @Override
     public String toString(){
-        return String.format("Working time: %d - %d\n Program name: %s\n Program duration: %d \n Start date: %s \n End date: %s",
+        return String.format("Working time: %d - %d\nProgram name: %s\nProgram duration: %dh \nStart date: %s \nEnd date: %s\n",
                 startHour, endHour, trainingName ,durationTime, startDate, determineEndDate());
     }
 }
