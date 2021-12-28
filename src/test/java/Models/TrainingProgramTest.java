@@ -64,8 +64,8 @@ public class TrainingProgramTest {
 
     private Object[] datesToTestCalculateTimeToCompletionOrAfterCompletion(){
         return new Object[] {
-                new Object[] {LocalDateTime.of(2021, 12,31,10,0), LocalDateTime.of(2021, 12,31,15,0), "0 d 4 hours"},
-                new Object[] {LocalDateTime.of(2021, 12,3,10,0), LocalDateTime.of(2021,12,3,12,0), "0 d 7 hours"},
+                new Object[] {LocalDateTime.of(2021, 12,31,10,0), LocalDateTime.of(2021, 12,31,15,0), "4 hours"},
+                new Object[] {LocalDateTime.of(2021, 12,3,10,0), LocalDateTime.of(2021,12,3,12,0), "7 hours"},
                 new Object[] {LocalDateTime.of(2021, 12,6,15,0), LocalDateTime.of(2021,12,10,11,0), "2 d 3 hours"},
                 new Object[] {LocalDateTime.of(2021,12,1,10,0), LocalDateTime.of(2021,12,3,15,0), "1 d 4 hours"},
                 new Object[] {LocalDateTime.of(2021,11,22,10,0), LocalDateTime.of(2021,12,6,12,0), "9 d 1 hours"}

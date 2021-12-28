@@ -1,46 +1,58 @@
 package Models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class Report {
 
-    // short report -  no parameter or 0
-    // full report - otherwise
-
     private final Map<Student, TrainingProgram> studentCourses;
-    private final LocalDateTime now = LocalDateTime.now();
+    private final LocalDateTime reportGenerationTime;
 
-    public Report(Map<Student, TrainingProgram> studentCourses){
+    public Report(Map<Student, TrainingProgram> studentCourses, LocalDateTime reportGenerationTime){
         this.studentCourses = studentCourses;
+        this.reportGenerationTime = reportGenerationTime;
     }
 
-    public String generateReport(char input){
-        String report = "";
+    public String generateReport(String input){
+        StringBuilder report = new StringBuilder();
 
-        for (Map.Entry<Student, TrainingProgram> entry : studentCourses.entrySet()) {
-            Student student = entry.getKey();
-            TrainingProgram trainingProgram = entry.getValue();
-            report = (input == '0' || input == ' ')  ? generateShortReport(student, trainingProgram) : generateFullReport(student, trainingProgram);
+        if(input.equals("0") || input.equals("")){
+            studentCourses.forEach((key, value) -> report.append(generateShortReport(key, value)).append("\n\n"));
         }
-
-        return report;
+        else {
+            studentCourses.forEach((key, value) -> report.append(generateFullReport(key, value)).append("\n\n"));
+        }
+        return report.toString();
     }
 
     private String generateShortReport(Student student, TrainingProgram training) {
-        boolean finished = training.isFinished(now);
-        String report = student.getFullName() + "(" + training.getTrainingName() + ") - ";
-        report +=  finished ? "Training completed." : "Training is not finished. ";
-        report += training.calculateTime(now);
-        report += finished ? "are left until the end." : "have passed since the end.";
-        return report;
+        return String.format("%s (%s) - %s",
+                student.getFullName(),
+                training.getTrainingName(),
+                trainingStatusSupport(training));
     }
 
     private String generateFullReport(Student student, TrainingProgram training){
-        String report = student.getFullName() + "\n" + training.toString();
-        report += training.calculateTime(now);
-        report += training.isFinished(now) ? "are left until the end." : "have passed since the end.";
-        return  report;
+        return String.format("%s\n%s%s",
+                student.getFullName(),
+                training.toString(),
+                trainingStatusSupport(training));
+    }
+
+    private String trainingStatusSupport(TrainingProgram training){
+        String calculatedTime = training.calculateTimeToCompletionOrAfterCompletion(reportGenerationTime);
+        StringBuilder status = new StringBuilder();
+
+        if(reportGenerationTime.isBefore(training.getStartDate())){
+            return "Program has not started yet!";
+        }
+        else if(calculatedTime.equals(""))
+            status.append("Program just completed!");
+        else {
+            status.append(training.isFinished(reportGenerationTime) ? "Program completed. " : "Training is not finished. ");
+            status.append(calculatedTime);
+            status.append(training.isFinished(reportGenerationTime) ? " have passed since the end." : " are left until the end.");
+        }
+        return status.toString();
     }
 }

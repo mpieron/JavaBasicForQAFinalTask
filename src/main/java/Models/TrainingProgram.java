@@ -2,6 +2,7 @@ package Models;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TrainingProgram{
@@ -14,6 +15,7 @@ public class TrainingProgram{
     private final LocalDateTime startDate;
     private final List<Course> courseList;
     private final int durationTime;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public TrainingProgram(String trainingName, List<Course> courseList, LocalDateTime startDate)
     {
@@ -35,7 +37,7 @@ public class TrainingProgram{
             hours = calculateFinishedOrToFinishHours(now, determineEndDate());
             days = calculateFinishedOrToFinishDays(now, determineEndDate());
         }
-        return String.format("%d d %d hours", days, hours);
+        return (days > 0 ? String.format("%d d ", days) : "") + (hours > 0 ? String.format("%d hours", hours) : "");
     }
 
     private int calculateFinishedOrToFinishDays(LocalDateTime before, LocalDateTime after){
@@ -99,9 +101,16 @@ public class TrainingProgram{
         return trainingName;
     }
 
+    public LocalDateTime getStartDate(){ return startDate; }
+
     @Override
     public String toString(){
         return String.format("Working time: %d - %d\nProgram name: %s\nProgram duration: %dh \nStart date: %s \nEnd date: %s\n",
-                startHour, endHour, trainingName ,durationTime, startDate, determineEndDate());
+                startHour,
+                endHour,
+                trainingName,
+                durationTime,
+                startDate.format(formatter),
+                determineEndDate().format(formatter));
     }
 }
