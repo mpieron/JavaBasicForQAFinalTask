@@ -46,8 +46,12 @@ public class Report {
         if(reportGenerationTime.isBefore(training.getStartDate())){
             return "Program has not started yet!";
         }
-        else if(calculatedTime.equals(""))
+        else if(reportGenerationTime.isEqual(training.getStartDate())){
+            return "Just started!";
+        }
+        else if(calculatedTime.equals("")){
             status.append("Program just completed!");
+        }
         else {
             status.append(training.isFinished(reportGenerationTime) ? "Program completed. " : "Training is not finished. ");
             status.append(calculatedTime);

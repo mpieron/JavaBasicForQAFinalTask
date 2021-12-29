@@ -78,4 +78,12 @@ public class ReportTest {
 
         assertEquals(expected, report.generateReport("0"));
     }
+
+    @Test
+    public void programJustStartedTest(){
+        String expected = String.format("%s (%s) - %s", student.getFullName(), program.getTrainingName(), "Just started!\n\n");
+        report = new Report(studentCourses, courseStartTime);
+
+        assertEquals(expected, report.generateReport("0"));
+    }
 }
