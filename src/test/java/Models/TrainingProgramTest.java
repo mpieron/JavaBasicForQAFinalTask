@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,14 @@ public class TrainingProgramTest {
         courses.add(new Course("Testing", 5));
 
         program = new TrainingProgram("Java", courses, LocalDateTime.of(2021, 12,31,10,0) );
+    }
+
+    @Test
+    public void coursesListIsEmptyTest(){
+        program = new TrainingProgram("No courses", new ArrayList<>(), LocalDateTime.of(2021, 12,31,10,0) );
+
+        assertEquals(program.getStartDate(), program.determineEndDate());
+        assertTrue(program.toString().contains("Program duration: 0h"));
     }
 
     @Test
@@ -52,6 +61,13 @@ public class TrainingProgramTest {
         program = new TrainingProgram("Java", courses, startDate);
 
         assertEquals(expected, program.calculateTimeToCompletionOrAfterCompletion(now));
+    }
+
+    @Test(expected = DateTimeException.class)
+    public void CourseStartDateIsSaturdayTest() throws DateTimeException{
+        program = new TrainingProgram("Java", courses, LocalDateTime.of(2021, 12, 25, 10, 0));
+
+        fail("Course can't start at weekend!");
     }
 
     private Object[] datesToTestCalculateEndDate(){

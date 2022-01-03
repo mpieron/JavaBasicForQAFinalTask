@@ -1,5 +1,6 @@
 package Models;
 
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,18 +12,24 @@ public class TrainingProgram{
     private static final int startHour = 10;
     private static final int endHour = 18;
 
-    private final String trainingName;
     private final LocalDateTime startDate;
+    private final String trainingName;
     private final List<Course> courseList;
     private final int durationTime;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public TrainingProgram(String trainingName, List<Course> courseList, LocalDateTime startDate)
     {
+        checkStartDate(startDate);
         this.trainingName = trainingName;
         this.courseList = courseList;
         this.startDate = startDate;
         this.durationTime = calculateDurationTime();
+    }
+
+    private void checkStartDate(LocalDateTime start) throws DateTimeException{
+        if(start.getDayOfWeek() == DayOfWeek.SATURDAY || start.getDayOfWeek() == DayOfWeek.SUNDAY)
+            throw new DateTimeException("Course can't start on the weekend!");
     }
 
     public String calculateTimeToCompletionOrAfterCompletion(LocalDateTime now) {

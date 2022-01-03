@@ -1,5 +1,6 @@
 package Models;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -18,15 +19,22 @@ public class TrainingSystem {
         testingCourses.add(new Course("Manual testing vs Automation testing", 10));
         testingCourses.add(new Course("Selenium", 8));
 
-        TrainingProgram javaTraining = new TrainingProgram("Java", javaCourses, LocalDateTime.of(2021,12,30,10,0));
-        TrainingProgram testingProgram = new TrainingProgram("Testing", testingCourses, LocalDateTime.of(2021,12,30,10,0));
+        try{
+            TrainingProgram javaTraining = new TrainingProgram("Java", javaCourses, LocalDateTime.of(2021,12,30,10,0));
+            TrainingProgram testingProgram = new TrainingProgram("Testing", testingCourses, LocalDateTime.of(2021,12,30,10,0));
 
-        studentCourses.put(new Student("Ivanov", "Ivan"), javaTraining);
-        studentCourses.put(new Student("Sidorov", "Ivan"), testingProgram);
+            studentCourses.put(new Student("Ivanov", "Ivan"), javaTraining);
+            studentCourses.put(new Student("Sidorov", "Ivan"), testingProgram);
+        }
+        catch (DateTimeException ex){
+            ex.printStackTrace();
+            System.exit(1);
+        }
 
         Report report = new Report(studentCourses);
 
         Scanner scanner = new Scanner(System.in);
+        System.out.println("What type of report do you want to generate?\nShort - enter 0 or nothing\nFull - enter anything else");
         String input = scanner.nextLine();
 
         System.out.println(report.generateReport(input));
