@@ -37,13 +37,13 @@ public class TrainingProgram{
             hours = calculateFinishedOrToFinishHours(now, determineEndDate());
             days = calculateFinishedOrToFinishDays(now, determineEndDate());
         }
-        return (days > 0 ? String.format("%d d ", days) : "") + (hours > 0 ? String.format("%d hours", hours) : "");
+        return (days > 0 ? String.format("%d days ", days) : "") + (hours > 0 ? String.format("%d hours", hours) : "");
     }
 
     private int calculateFinishedOrToFinishDays(LocalDateTime before, LocalDateTime after){
         int days = 0;
         while(before.plusDays(1).isBefore(after)){
-            if(before.plusDays(1).getDayOfWeek() != DayOfWeek.SATURDAY && before.plusDays(1).getDayOfWeek() != DayOfWeek.SUNDAY){
+            if (before.plusDays(1).getDayOfWeek() != DayOfWeek.SATURDAY && before.plusDays(1).getDayOfWeek() != DayOfWeek.SUNDAY) {
                 days++;
             }
             before = before.plusDays(1);
@@ -105,12 +105,20 @@ public class TrainingProgram{
 
     @Override
     public String toString(){
-        return String.format("Working time: %d - %d\nProgram name: %s\nProgram duration: %dh \nStart date: %s \nEnd date: %s\n",
+        return String.format("Working time: %d - %d\nProgram name: %s\nProgram duration: %dh\n%sStart date: %s \nEnd date: %s\n",
                 startHour,
                 endHour,
                 trainingName,
                 durationTime,
+                listCourses(),
                 startDate.format(formatter),
                 determineEndDate().format(formatter));
+    }
+
+    private String listCourses(){
+        StringBuilder list = new StringBuilder();
+        courseList.forEach(course -> list.append(course.toString()).append("\n"));
+
+        return list.toString();
     }
 }

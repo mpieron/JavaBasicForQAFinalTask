@@ -8,6 +8,11 @@ public class Report {
     private final Map<Student, TrainingProgram> studentCourses;
     private final LocalDateTime reportGenerationTime;
 
+    public Report(Map<Student, TrainingProgram> studentCourses){
+        this.studentCourses = studentCourses;
+        this.reportGenerationTime = LocalDateTime.now();
+    }
+
     public Report(Map<Student, TrainingProgram> studentCourses, LocalDateTime reportGenerationTime){
         this.studentCourses = studentCourses;
         this.reportGenerationTime = reportGenerationTime;
@@ -49,7 +54,8 @@ public class Report {
         else if(reportGenerationTime.isEqual(training.getStartDate())){
             return "Just started!";
         }
-        else if(calculatedTime.equals("")){
+        // in case program just completed (days = 0 and hours = 0) method calculateTime return empty string
+        else if(calculatedTime.isEmpty()){
             status.append("Program just completed!");
         }
         else {

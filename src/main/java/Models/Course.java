@@ -12,7 +12,7 @@ public class Course {
 
     @Override
     public String toString(){
-        return String.format("%s\t%dh",courseName, durationHours);
+        return String.format("%s - %dh",courseName, durationHours);
     }
 
     public int getDurationHours(){

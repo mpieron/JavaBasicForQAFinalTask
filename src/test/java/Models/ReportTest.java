@@ -65,7 +65,10 @@ public class ReportTest {
     public void programHasNotStarted(){
         reportGenerationTime = LocalDateTime.of(2021,10,2,15,0);
         report = new Report(studentCourses, reportGenerationTime);
-        String expected = String.format("%s (%s) - %s", student.getFullName(), program.getTrainingName(), "Program has not started yet!\n\n");
+        String expected = String.format("%s (%s) - %s",
+                student.getFullName(),
+                program.getTrainingName(),
+                "Program has not started yet!\n\n");
 
         assertEquals(expected, report.generateReport("0"));
     }
@@ -74,14 +77,20 @@ public class ReportTest {
     public void programJustCompletedTest(){
         reportGenerationTime = LocalDateTime.of(2021,12,2,11,0);
         report = new Report(studentCourses, reportGenerationTime);
-        String expected = String.format("%s (%s) - %s", student.getFullName(), program.getTrainingName(), "Program just completed!\n\n");
+        String expected = String.format("%s (%s) - %s",
+                student.getFullName(),
+                program.getTrainingName(),
+                "Program just completed!\n\n");
 
         assertEquals(expected, report.generateReport("0"));
     }
 
     @Test
     public void programJustStartedTest(){
-        String expected = String.format("%s (%s) - %s", student.getFullName(), program.getTrainingName(), "Just started!\n\n");
+        String expected = String.format("%s (%s) - %s",
+                student.getFullName(),
+                program.getTrainingName(),
+                "Just started!\n\n");
         report = new Report(studentCourses, courseStartTime);
 
         assertEquals(expected, report.generateReport("0"));
