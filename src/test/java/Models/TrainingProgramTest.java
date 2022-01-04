@@ -84,7 +84,11 @@ public class TrainingProgramTest {
                 new Object[] {LocalDateTime.of(2021, 12,3,10,0), LocalDateTime.of(2021,12,3,12,0), "7 hours"},
                 new Object[] {LocalDateTime.of(2021, 12,6,15,0), LocalDateTime.of(2021,12,10,11,0), "2 days 3 hours"},
                 new Object[] {LocalDateTime.of(2021,12,1,10,0), LocalDateTime.of(2021,12,3,15,0), "1 days 4 hours"},
-                new Object[] {LocalDateTime.of(2021,11,22,10,0), LocalDateTime.of(2021,12,6,12,0), "9 days 1 hours"}
+                new Object[] {LocalDateTime.of(2021,11,22,10,0), LocalDateTime.of(2021,12,6,12,0), "9 days 1 hours"},
+                new Object[] {LocalDateTime.of(2021,12,30,10,0), LocalDateTime.of(2021,12,31,8,0), "1 hours"},
+                new Object[] {LocalDateTime.of(2021,12,30,10,0), LocalDateTime.of(2021,12,31,20,0), "7 hours"},
+                new Object[] {LocalDateTime.of(2021,12,30,10,0), LocalDateTime.of(2021,12,30,20,0), "1 hours"},
+                new Object[] {LocalDateTime.of(2021,12,29,16,0), LocalDateTime.of(2021,12,30,8,0), "7 hours"}
         };
     }
 }

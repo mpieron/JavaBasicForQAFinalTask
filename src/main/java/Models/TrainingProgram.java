@@ -59,6 +59,15 @@ public class TrainingProgram{
     }
 
     private int calculateFinishedOrToFinishHours(LocalDateTime before, LocalDateTime after){
+        if(after.getHour() < startHour){
+            return before.getHour()-startHour;
+        }
+        else if(after.getHour() > endHour){
+            return endHour - before.getHour();
+        }
+        else if(before.getHour() < startHour || before.getHour() > endHour) {
+            return after.getHour() - startHour;
+        }
         return after.getHour() < before.getHour() ? endHour - before.getHour() + after.getHour() - startHour : after.getHour() - before.getHour();
     }
 

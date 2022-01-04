@@ -25,18 +25,18 @@ public class TrainingSystem {
 
             studentCourses.put(new Student("Ivanov", "Ivan"), javaTraining);
             studentCourses.put(new Student("Sidorov", "Ivan"), testingProgram);
+
+            Report report = new Report(studentCourses);
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("What type of report do you want to generate?\nShort - enter 0 or nothing\nFull - enter anything else");
+            String input = scanner.nextLine();
+
+            System.out.println(report.generateReport(input));
         }
         catch (DateTimeException ex){
             ex.printStackTrace();
             System.exit(1);
         }
-
-        Report report = new Report(studentCourses);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("What type of report do you want to generate?\nShort - enter 0 or nothing\nFull - enter anything else");
-        String input = scanner.nextLine();
-
-        System.out.println(report.generateReport(input));
     }
 }
